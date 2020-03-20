@@ -1,0 +1,3 @@
+﻿  main.cpp
+d:\c练习\p2p\p2p\util.hpp(36): warning C4244: “初始化”: 从“uint64_t”转换到“unsigned int”，可能丢失数据
+  P2P.vcxproj -> D:\C练习\P2P\Debug\P2P.exe

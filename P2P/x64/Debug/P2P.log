@@ -1,0 +1,2 @@
+﻿  main.cpp
+d:\c练习\p2p\p2p\util.hpp(42): error C3867: “std::basic_ifstream<char,std::char_traits<char>>::is_open”: 非标准语法；请使用 "&" 来创建指向成员的指针
