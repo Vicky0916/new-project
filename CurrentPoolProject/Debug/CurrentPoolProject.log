@@ -1,0 +1,4 @@
+﻿  Test.cpp
+  ThreadCache.cpp
+  正在生成代码...
+d:\c练习\currentpoolproject\currentpoolproject\threadcache.cpp(33): error C4716: “ThreadCache::FetchFromCentralCache”: 必须返回一个值
