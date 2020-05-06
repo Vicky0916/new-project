@@ -20,13 +20,22 @@ void ThreadCache::Deallocte(void* ptr, size_t size)  //还给我
 	size_t index=SizeClass::ListIndex(size);
 	FreeList& freeList = _freeLists[index];
 	freeList.Push(ptr);
-	/*if ()
+	size_t num = SizeClass::NumMoveSize(size);
+	if (freeList.Num()>=num)  //大于一次批量申请的
 	{
-	    //ReleaseToCentralCache();   //在FreeList挂的太多
-	}*/
+		ListTooLong(freeList,num,size);  //在FreeList挂的太多
+	}
 	 
 }
-void* ThreadCache::FetchFromCentralCache(size_t index, size_t size)
+void ThreadCache::ListTooLong(FreeList& freeList, size_t num,size_t size)
+{
+	void* start = nullptr, *end = nullptr;
+	freeList.PopRange(start, end, num);
+	NextObj(end) = nullptr;
+	centralCacheInst.ReleaseListToSpans(start );
+
+}
+void* ThreadCache::FetchFromCentralCache(size_t size)
 {
 	//模拟取内存对象的代码
 	size_t num = SizeClass::NumMoveSize(size);
@@ -37,11 +46,11 @@ void* ThreadCache::FetchFromCentralCache(size_t index, size_t size)
 	{
 		return start;
 	}
-	else
+	else  //一个以及一个以上
 	{
 		size_t index = SizeClass::ListIndex(size);
 		FreeList &list = _freeLists[index];
-		list.PushRange(NextObj(start),end);//如果只有一个就返回，如果有多个那就把其他的给挂起来
+		list.PushRange(NextObj(start),end,actualNum-1);//如果只有一个就返回，如果有多个那就把其他的给挂起来
 		return start;
 	}
 	
